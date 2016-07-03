@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Arie Bregman
+  description: Ansible role for deploying Zuul
+  company: Red Hat
+  license: Apache
+  min_ansible_version: 1.9
+  categories:
+    - cloud
+    - infra
+    - CI
+  platforms:
+    - name: EL
+      versions:
+        - 7
+dependencies: []
