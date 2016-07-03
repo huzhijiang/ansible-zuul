@@ -1,0 +1,29 @@
+- name: Install packages
+  yum:
+    name="{{ item }}"
+  with_items:
+    - python-pip
+    - python-webob
+    - python-lockfile
+    - python-paste
+    - python-yaml
+    - python-paramiko
+    - python-daemon
+
+- name: Add 'zuul' group
+  group:
+    name=zuul
+    state=present
+
+- name: Add 'zuul' user
+  user:
+    name=zuul
+    shell=/bin/bash
+    group=zuul
+    state=present
+
+- name: Download Zuul
+  git:
+    repo=https://git.openstack.org/openstack-infra/zuul
+    dest=/opt/zuul
+
