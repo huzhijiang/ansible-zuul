@@ -31,9 +31,36 @@
   pip:
     name=/opt/zuul
 
-- Deploy zuul.conf
+- name: Deploy zuul.conf
   template:
     src=zuul.conf.j2
     dest=/etc/zuul/zuul.conf
     mode=0755
 
+- name: Create zuul directories
+  file:
+    path="{{ item }}"
+    state=directory
+    owner=zuul
+    group=zuul
+    mode=0755
+  with_items:
+    - '/var/log/zuul'
+    - '/var/run/zuul'
+    - '/var/run/zuul-merger'
+    - '/var/lib/zuul'
+    - '/var/lib/zuul/git'
+    - '/var/lib/zuul/www'
+    - '/var/lib/zuul/www/lib'
+
+- name: Create zuul service file
+  file:
+    src="{{ item.src }}"
+    owner=root
+    group=root
+    mode=0555
+    dest="{{ item.dest }}"
+  with_items:
+    - { src: 'zuul.init', dest: '/etc/init.d/zuul' }
+    - { src: 'zuul-merger.init', dest: '/etc/init.d/zuul-merger' }
+    - { src: 'zuul-launcher.init', dest: '/etc/init.d/zuul-launcher' }
