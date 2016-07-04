@@ -22,8 +22,18 @@
     group=zuul
     state=present
 
-- name: Download Zuul
+- name: Retrieve Zuul
   git:
     repo=https://git.openstack.org/openstack-infra/zuul
     dest=/opt/zuul
+
+- name: Install Zuul
+  pip:
+    name=/opt/zuul
+
+- Deploy zuul.conf
+  template:
+    src=zuul.conf.j2
+    dest=/etc/zuul/zuul.conf
+    mode=0755
 
