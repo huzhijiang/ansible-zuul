@@ -9,6 +9,7 @@
     - python-yaml
     - python-paramiko
     - python-daemon
+    - logrotate
 
 - name: Add 'zuul' group
   group:
@@ -64,3 +65,5 @@
     - { src: 'zuul.init', dest: '/etc/init.d/zuul' }
     - { src: 'zuul-merger.init', dest: '/etc/init.d/zuul-merger' }
     - { src: 'zuul-launcher.init', dest: '/etc/init.d/zuul-launcher' }
+
+- include: zuul-merger.yml
