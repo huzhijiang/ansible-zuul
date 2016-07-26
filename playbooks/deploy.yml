@@ -1,0 +1,4 @@
+# Deploy zuul
+- hosts: zuul
+  roles:
+    - role: ansible-zuul

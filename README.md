@@ -30,6 +30,8 @@ Example Playbook
       roles:
         - role: ansible-zuul
 
+Note: you have it ready to copy in playbooks directory.
+
 License
 -------
 
