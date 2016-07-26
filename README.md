@@ -8,7 +8,7 @@ _Tested on RHEL 7_
 Requirements
 ------------
 
-None.
+User should have sudo on the target system.
 
 Dependencies
 ------------

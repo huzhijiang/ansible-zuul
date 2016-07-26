@@ -1,22 +1,35 @@
 - name: Install packages
+  become: yes
+  become_method: sudo
   yum:
     name="{{ item }}"
   with_items:
+    - 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
     - python-pip
-    - python-webob
     - python-lockfile
-    - python-paste
-    - python-yaml
     - python-paramiko
     - python-daemon
     - logrotate
 
+- name: Install pip packages
+  become: yes
+  become_method: sudo
+  pip:
+    name="{{ item }}"
+  with_items:
+    - 'webob'
+    - 'paste'
+
 - name: Add 'zuul' group
+  become: yes
+  become_method: sudo
   group:
     name=zuul
     state=present
 
 - name: Add 'zuul' user
+  become: yes
+  become_method: sudo
   user:
     name=zuul
     shell=/bin/bash
@@ -24,11 +37,15 @@
     state=present
 
 - name: Retrieve Zuul
+  become: yes
+  become_method: sudo
   git:
     repo=https://git.openstack.org/openstack-infra/zuul
     dest=/opt/zuul
 
 - name: Install Zuul
+  become: yes
+  become_method: sudo
   pip:
     name=/opt/zuul
 
@@ -39,6 +56,8 @@
     mode=0755
 
 - name: Create zuul directories
+  become: yes
+  become_method: sudo
   file:
     path="{{ item }}"
     state=directory
@@ -55,6 +74,8 @@
     - '/var/lib/zuul/www/lib'
 
 - name: Create zuul service file
+  become: yes
+  become_method: sudo
   file:
     src="{{ item.src }}"
     owner=root
