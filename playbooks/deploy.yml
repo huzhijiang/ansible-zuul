@@ -1,4 +1,6 @@
 # Deploy zuul
 - hosts: zuul
+  vars:
+    gerrit_server: 'https://my_gerrit.com'
   roles:
     - role: ansible-zuul

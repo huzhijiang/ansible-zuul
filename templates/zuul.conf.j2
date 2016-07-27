@@ -1,21 +1,27 @@
-[gearman]
-server=127.0.0.1
-
 [gearman_server]
-start=true
-log_config=/etc/zuul/gearman-logging.conf
-
-[gerrit]
-server={{ gerrit_server }}
-user={{ gerrit_user }}
-sshkey={{ gerrit_keyfile }}
+listen_address = 127.0.0.1
+log_config = /etc/zuul/gearman-logging.conf
+start = true
 
 [zuul]
-layout_config=/etc/zuul/layout.yaml
-log_config=/etc/zuul/logging.conf
-state_dir=/var/lib/zuul
-git_dir=/var/lib/zuul/git
-push_change_refs=false
-status_url={{ zuul_status_url }}
-job_name_in_report=true
-zuul_url={{ zuul_url }}
+layout_config = /etc/zuul/config/layout.yaml
+log_config = /etc/zuul/server-logging.conf
+pidfile = /var/run/zuul-server/zuul-server.pid
+state_dir = /var/lib/zuul
+
+[gerrit]
+port = {{ gerrit_port | default ('29418') }}
+server = {{ gerrit_server | default('127.0.0.1') }}
+sshkey = {{ gerrit_sshkey | default('/var/lib/zuul/.ssh/id_rsa') }}
+user = {{ gerrit_user | default('zuul') }}
+
+[launcher]
+jenkins_jobs=/var/lib/zuul
+log_config = /etc/zuul/launcher-logging.conf
+workspace_root=/var/lib/zuul/workspace
+
+[merger]
+git_dir = /var/lib/zuul/git
+log_config = /etc/zuul/merger-logging.conf
+pidfile = /var/run/zuul-merger/zuul-merger.pid
+zuul_url = 127.0.0.1

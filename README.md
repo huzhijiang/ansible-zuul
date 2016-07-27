@@ -18,10 +18,16 @@ None.
 Role Variables
 --------------
 
-| Name            | Default                           | Description                               |
-|-----------------|-----------------------------------|-------------------------------------------|
-| gerrit_server   | None                              | Gerrit server url                         |
-| gerrit_user     | None                              | Gerrit user                               |
+|                                   Gerrit                                         |
+|----------------------------------------------------------------------------------|
+| Name            | Default                | Description                           |
+|-----------------|------------------------|---------------------------------------|
+| gerrit_server   | 127.0.0.1              | FQDN of Gerrit server                 |
+| gerrit_user     | zuul                   | User to use when logging to Gerrit    |
+| gerrit_sshkey   | /home/zuul/.ssh/id_rsa | SSH key path, for logging into Gerrit |
+| gerrit_port     | 29418                  | Gerrit server port                    |
+
+
 
 Example Playbook
 ----------------
@@ -30,7 +36,7 @@ Example Playbook
       roles:
         - role: ansible-zuul
 
-Note: you have it ready to copy in playbooks directory.
+Note: you can copy the sample from playbooks directory.
 
 License
 -------

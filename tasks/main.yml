@@ -1,6 +1,5 @@
 - name: Install packages
   become: yes
-  become_method: sudo
   yum:
     name="{{ item }}"
   with_items:
@@ -13,7 +12,6 @@
 
 - name: Install pip packages
   become: yes
-  become_method: sudo
   pip:
     name="{{ item }}"
   with_items:
@@ -22,42 +20,31 @@
 
 - name: Add 'zuul' group
   become: yes
-  become_method: sudo
   group:
     name=zuul
     state=present
 
 - name: Add 'zuul' user
   become: yes
-  become_method: sudo
   user:
     name=zuul
     shell=/bin/bash
     group=zuul
     state=present
 
-- name: Retrieve Zuul
+- name: Clone Zuul repository
   become: yes
-  become_method: sudo
   git:
     repo=https://git.openstack.org/openstack-infra/zuul
     dest=/opt/zuul
 
 - name: Install Zuul
   become: yes
-  become_method: sudo
   pip:
     name=/opt/zuul
 
-- name: Deploy zuul.conf
-  template:
-    src=zuul.conf.j2
-    dest=/etc/zuul/zuul.conf
-    mode=0755
-
 - name: Create zuul directories
   become: yes
-  become_method: sudo
   file:
     path="{{ item }}"
     state=directory
@@ -65,6 +52,7 @@
     group=zuul
     mode=0755
   with_items:
+    - '/etc/zuul'
     - '/var/log/zuul'
     - '/var/run/zuul'
     - '/var/run/zuul-merger'
@@ -73,18 +61,30 @@
     - '/var/lib/zuul/www'
     - '/var/lib/zuul/www/lib'
 
-- name: Create zuul service file
+- name: Deploy zuul.conf
+  become: yes
+  template:
+    src=zuul.conf.j2
+    dest=/etc/zuul/zuul.conf
+    mode=0755
+
+- name: Create zuul service files
   become: yes
   become_method: sudo
-  file:
+  copy:
     src="{{ item.src }}"
     owner=root
     group=root
     mode=0555
     dest="{{ item.dest }}"
   with_items:
-    - { src: 'zuul.init', dest: '/etc/init.d/zuul' }
+    - { src: 'zuul-server.service', dest: '/etc/systemd/system/zuul-server.service' }
     - { src: 'zuul-merger.init', dest: '/etc/init.d/zuul-merger' }
     - { src: 'zuul-launcher.init', dest: '/etc/init.d/zuul-launcher' }
 
-- include: zuul-merger.yml
+- name: Start zuul-server
+  become: yes
+  service:
+    name=zuul-server
+    state=started
+    enabled=yes
