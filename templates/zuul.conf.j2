@@ -3,6 +3,10 @@ listen_address = 127.0.0.1
 log_config = /etc/zuul/gearman-logging.conf
 start = true
 
+[gearman]
+server = 127.0.0.1
+port = 4730
+
 [zuul]
 layout_config = /etc/zuul/config/layout.yaml
 log_config = /etc/zuul/server-logging.conf
@@ -12,7 +16,7 @@ state_dir = /var/lib/zuul
 [gerrit]
 port = {{ gerrit_port | default ('29418') }}
 server = {{ gerrit_server | default('127.0.0.1') }}
-sshkey = {{ gerrit_sshkey | default('/var/lib/zuul/.ssh/id_rsa') }}
+sshkey = {{ gerrit_sshkey | default('/home/zuul/.ssh/id_rsa') }}
 user = {{ gerrit_user | default('zuul') }}
 
 [launcher]

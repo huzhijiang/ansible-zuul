@@ -30,6 +30,7 @@
     name=zuul
     shell=/bin/bash
     group=zuul
+    generate_ssh_key=yes
     state=present
 
 - name: Clone Zuul repository
@@ -68,14 +69,25 @@
     dest=/etc/zuul/zuul.conf
     mode=0755
 
-- name: Create zuul service files
+- name: Deploy logging configuration files
   become: yes
-  become_method: sudo
   copy:
     src="{{ item.src }}"
     owner=root
     group=root
-    mode=0555
+    mode=0755
+    dest="{{ item.dest }}"
+  with_items:
+    - { src: 'server-logging.conf', dest: '/etc/zuul/server-logging.conf' }
+    - { src: 'gearman-logging.conf', dest: '/etc/zuul/gearman-logging.conf' }
+
+- name: Create zuul service files
+  become: yes
+  copy:
+    src="{{ item.src }}"
+    owner=root
+    group=root
+    mode=0755
     dest="{{ item.dest }}"
   with_items:
     - { src: 'zuul-server.service', dest: '/etc/systemd/system/zuul-server.service' }
