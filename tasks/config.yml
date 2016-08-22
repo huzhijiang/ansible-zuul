@@ -1,0 +1,38 @@
+---
+- name: Create zuul directories
+  become: yes 
+  file:
+    path="{{ item }}" 
+    state=directory
+    owner=zuul
+    group=zuul
+    mode=0755
+  with_items:
+    - '/etc/zuul'
+    - '/etc/zuul/config'
+    - '/var/log/zuul'
+    - '/var/run/zuul'
+    - '/var/run/zuul-merger'
+    - '/var/lib/zuul'
+    - '/var/lib/zuul/git'
+    - '/var/lib/zuul/www'
+    - '/var/lib/zuul/www/lib'
+
+- name: Deploy zuul.conf
+  become: yes
+  template:
+    src=zuul.conf.j2
+    dest=/etc/zuul/zuul.conf
+    mode=0755
+
+- name: Deploy logging configuration files
+  become: yes
+  copy:
+    src="{{ item.src }}" 
+    owner=root
+    group=root
+    mode=0755
+    dest="{{ item.dest }}" 
+  with_items:
+    - { src: 'server-logging.conf', dest: '/etc/zuul/server-logging.conf' }
+    - { src: 'gearman-logging.conf', dest: '/etc/zuul/gearman-logging.conf' }

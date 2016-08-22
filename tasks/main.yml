@@ -1,37 +1,5 @@
-- name: Install packages
-  become: yes
-  yum:
-    name="{{ item }}"
-  with_items:
-    - 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
-    - python-pip
-    - python-lockfile
-    - python-paramiko
-    - python-daemon
-    - logrotate
-
-- name: Install pip packages
-  become: yes
-  pip:
-    name="{{ item }}"
-  with_items:
-    - 'webob'
-    - 'paste'
-
-- name: Add 'zuul' group
-  become: yes
-  group:
-    name=zuul
-    state=present
-
-- name: Add 'zuul' user
-  become: yes
-  user:
-    name=zuul
-    shell=/bin/bash
-    group=zuul
-    generate_ssh_key=yes
-    state=present
+- include: packages.yml
+- include: user.yml
 
 - name: Clone Zuul repository
   become: yes
@@ -44,42 +12,7 @@
   pip:
     name=/opt/zuul
 
-- name: Create zuul directories
-  become: yes
-  file:
-    path="{{ item }}"
-    state=directory
-    owner=zuul
-    group=zuul
-    mode=0755
-  with_items:
-    - '/etc/zuul'
-    - '/var/log/zuul'
-    - '/var/run/zuul'
-    - '/var/run/zuul-merger'
-    - '/var/lib/zuul'
-    - '/var/lib/zuul/git'
-    - '/var/lib/zuul/www'
-    - '/var/lib/zuul/www/lib'
-
-- name: Deploy zuul.conf
-  become: yes
-  template:
-    src=zuul.conf.j2
-    dest=/etc/zuul/zuul.conf
-    mode=0755
-
-- name: Deploy logging configuration files
-  become: yes
-  copy:
-    src="{{ item.src }}"
-    owner=root
-    group=root
-    mode=0755
-    dest="{{ item.dest }}"
-  with_items:
-    - { src: 'server-logging.conf', dest: '/etc/zuul/server-logging.conf' }
-    - { src: 'gearman-logging.conf', dest: '/etc/zuul/gearman-logging.conf' }
+- include: config.yml
 
 - name: Create zuul service files
   become: yes
@@ -100,3 +33,6 @@
     name=zuul-server
     state=started
     enabled=yes
+
+- include: layout.yml
+  when: zuul_layout is defined

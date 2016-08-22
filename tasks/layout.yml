@@ -1,0 +1,7 @@
+---
+- name: Deploy layout
+  become: yes
+  copy:
+    src="{{ zuul_layout }}"
+    dest="/etc/zuul/config/layout.yaml"
+  notify: Reload zuul

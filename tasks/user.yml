@@ -1,0 +1,14 @@
+- name: Add 'zuul' group
+  become: yes 
+  group:
+    name=zuul
+    state=present
+
+- name: Add 'zuul' user
+  become: yes 
+  user:
+    name=zuul
+    shell=/bin/bash
+    group=zuul
+    generate_ssh_key=yes
+    state=present

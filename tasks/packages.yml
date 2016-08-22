@@ -1,0 +1,19 @@
+- name: Install packages
+  become: yes 
+  yum:
+    name="{{ item }}" 
+  with_items:
+    - 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
+    - python-pip
+    - python-lockfile
+    - python-paramiko
+    - python-daemon
+    - logrotate
+
+- name: Install pip packages
+  become: yes
+  pip:
+    name="{{ item }}" 
+  with_items:
+    - 'webob'
+    - 'paste'
