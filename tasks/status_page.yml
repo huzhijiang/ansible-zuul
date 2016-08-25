@@ -1,0 +1,45 @@
+---
+- name: Install httpd
+  become: yes
+  yum:
+    name=httpd
+    state=present
+
+- name: Permit httpd to make network connections
+  become: yes
+  ignore_errors: yes
+  seboolean: 
+    name=httpd_can_network_connect
+    state=yes
+    persistent=yes
+
+- name: Copy fetch-dependencies to /var/lib/zuul/www
+  become: yes
+  shell: cp /opt/zuul/etc/status/fetch-dependencies.sh /var/lib/zuul/www
+
+- name: Copy zuul status page files to /var/lib/zuul/www
+  become: yes
+  shell: cp -r /opt/zuul/etc/status/public_html/* /var/lib/zuul/www
+
+- name: Run fetch-dependencies.sh
+  become: yes
+  ignore_errors: yes
+  shell: /var/lib/zuul/www/fetch-dependencies.sh
+
+- name: Backup current httpd configuration
+  become: yes
+  ignore_errors: yes
+  shell: cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.bk
+
+- name: Deploy Zuul httpd configuration
+  become: yes
+  copy:
+    src=httpd.conf
+    dest='/etc/httpd/conf/httpd.conf'
+
+- name: Start httpd
+  become: yes
+  service:
+    name=httpd
+    state=started
+    enabled=yes

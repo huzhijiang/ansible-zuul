@@ -3,5 +3,6 @@
 - hosts: zuul
   vars:
     gerrit_server: 'https://my_gerrit.com'
+    status_page: yes
   roles:
     - role: ansible-zuul

@@ -34,5 +34,11 @@
     state=started
     enabled=yes
 
+# Optional includes
+# -----------------
+
 - include: layout.yml
   when: zuul_layout is defined
+
+- include: status_page.yml
+  when: status_page is defined and status_page

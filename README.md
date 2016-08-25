@@ -24,6 +24,7 @@ Role Variables
 | gerrit_user     | zuul                   | User to use when logging to Gerrit    |
 | gerrit_sshkey   | /home/zuul/.ssh/id_rsa | SSH key path, for logging into Gerrit |
 | gerrit_port     | 29418                  | Gerrit server port                    |
+| status_page     | Yes                    | Setup Zuul status page                |
 | zuul_layout     | None                   | Zuul layout file                      |
 
 
