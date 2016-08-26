@@ -36,3 +36,5 @@
   with_items:
     - { src: 'server-logging.conf', dest: '/etc/zuul/server-logging.conf' }
     - { src: 'gearman-logging.conf', dest: '/etc/zuul/gearman-logging.conf' }
+    - { src: 'merger-logging.conf', dest: '/etc/zuul/merger-logging.conf' }
+    - { src: 'launcher-logging.conf', dest: '/etc/zuul/launcher-logging.conf' }
