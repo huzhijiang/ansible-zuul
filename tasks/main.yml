@@ -24,15 +24,22 @@
     dest="{{ item.dest }}"
   with_items:
     - { src: 'zuul-server.service', dest: '/etc/systemd/system/zuul-server.service' }
+    - { src: 'zuul-server.init', dest: '/etc/init.d/zuul-server' }
+    - { src: 'zuul-merger.service', dest: '/etc/systemd/system/zuul-merger.service' }
     - { src: 'zuul-merger.init', dest: '/etc/init.d/zuul-merger' }
+    - { src: 'zuul-launcher.service', dest: '/etc/systemd/system/zuul-launcher.service' }
     - { src: 'zuul-launcher.init', dest: '/etc/init.d/zuul-launcher' }
 
-- name: Start zuul-server
+- name: Start Zuul services (server, launcher and merger)
   become: yes
   service:
-    name=zuul-server
+    name="{{ item }}"
     state=started
     enabled=yes
+  with_items:
+    - 'zuul-server'
+    - 'zuul-merger'
+    - 'zuul-launcher'
 
 # Optional includes
 # -----------------
