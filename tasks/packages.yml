@@ -8,6 +8,7 @@
     - python-lockfile
     - python-paramiko
     - python-daemon
+    - python-devel
     - logrotate
 
 - name: Install pip packages
