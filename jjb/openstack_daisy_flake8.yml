@@ -1,0 +1,71 @@
+- job:
+    block-downstream: false
+    block-upstream: false
+    builders:
+    - shell: |-
+        set -e
+
+        cd $WORKSPACE/code/daisy
+        tox -e pep8 -- --statistic
+        cd $WORKSPACE/code/daisyclient
+        tox -e pep8 -- --statistic
+        cd $WORKSPACE/code/horizon
+        tox -e pep8 -- --statistic
+
+        if [ -d $WORKSPACE/test/tempest ]; then
+        cd $WORKSPACE/test/tempest
+        flake8 --statistic
+        fi
+    concurrent: false
+    description: null
+    disabled: false
+    logrotate:
+      artifactDaysToKeep: '-1'
+      artifactNumToKeep: '-1'
+      daysToKeep: '-1'
+      numToKeep: '5'
+    name: !!python/unicode 'openstack_daisy_flake8'
+    node: master
+    parameters:
+    - string:
+        default: $BUILD_NUMBER
+        description: specify a build number
+        name: BUILD_NUMBER
+    - string:
+        default: $ZUUL_REF
+        description: branch name
+        name: ZUUL_REF
+    - string:
+        default: $ZUUL_COMMIT
+        description: git commit id
+        name: ZUUL_COMMIT
+    project-type: freestyle
+    properties:
+    - raw:
+        xml: |
+          <org.jenkinsci.plugins.ZMQEventPublisher.HudsonNotificationProperty plugin="zmq-event-publisher@0.0.5">
+          <enabled>false</enabled>
+          </org.jenkinsci.plugins.ZMQEventPublisher.HudsonNotificationProperty>
+    publishers:
+    - raw:
+        xml: |
+          <be.certipost.hudson.plugin.SCPRepositoryPublisher plugin="scp@1.9-SNAPSHOT">
+          <siteName>LogServer</siteName>
+          <entries>
+          <be.certipost.hudson.plugin.Entry>
+          <filePath>$LOG_PATH</filePath>
+          <sourceFile />
+          <keepHierarchy>false</keepHierarchy>
+          <copyConsoleLog>true</copyConsoleLog>
+          <copyAfterFailure>true</copyAfterFailure>
+          </be.certipost.hudson.plugin.Entry>
+          </entries>
+          </be.certipost.hudson.plugin.SCPRepositoryPublisher>
+    scm:
+    - git:
+        branches:
+        - $ZUUL_REF
+        refspec: $ZUUL_REF:$ZUUL_REF
+        url: http://10.30.11.3/p/openstack/daisycloud-core
+    triggers: []
+    wrappers: []

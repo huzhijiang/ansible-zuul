@@ -12,7 +12,8 @@ layout_config = /etc/zuul/config/layout.yaml
 log_config = /etc/zuul/server-logging.conf
 pidfile = /var/run/zuul-server/zuul-server.pid
 state_dir = /var/lib/zuul
-url_pattern=http://120.24.17.215/{build.parameters[LOG_PATH]}
+url_pattern=http://120.24.17.215/log/{build.parameters[LOG_PATH]}
+job_name_in_report=true
 
 [gerrit]
 port = {{ gerrit_port | default ('29418') }}
