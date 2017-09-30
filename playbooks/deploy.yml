@@ -6,5 +6,6 @@
     gerrit_user: 'huzhj'
     gerrit_sshkey: '/home/zuul/.ssh/id_rsa'
     status_page: yes
+    zuul_layout: 'layout.yaml'
   roles:
     - role: ansible-zuul
