@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Note: Please run it outside of this directory
+ansible-playbook -i ansible-zuul/inventory ansible-zuul/playbooks/deploy.yml -vvv

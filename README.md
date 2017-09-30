@@ -47,3 +47,5 @@ Author Information
 ------------------
 
 Arie Bregman - abregman@redhat.com
+
+See http://abregman.com/2016/09/06/openstack-infra-how-to-deploy-zuul/ for a detailed doc

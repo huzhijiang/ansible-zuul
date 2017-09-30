@@ -2,7 +2,9 @@
 ---
 - hosts: zuul
   vars:
-    gerrit_server: 'https://my_gerrit.com'
+    gerrit_server: 'review.openstack.org'
+    gerrit_user: 'huzhj'
+    gerrit_sshkey: '/home/zuul/.ssh/id_rsa'
     status_page: yes
   roles:
     - role: ansible-zuul

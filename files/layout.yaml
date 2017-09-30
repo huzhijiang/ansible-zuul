@@ -1,0 +1,47 @@
+pipelines:
+  - name: check_daisy
+    description: flake8 and ut check
+    failure-message: flake8 or ut failure.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: recheck
+        - event: ref-updated
+        - event: patchset-created
+    success:
+      gerrit:
+        verified: +1
+    failure:
+      gerrit:
+        verified: +1
+
+  - name: tempest_daisy
+    description: build and tempest
+    failure-message: build failure.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: recheck
+        - event: ref-updated
+        - event: patchset-created
+    success:
+      gerrit:
+        verified: +1
+    failure:
+      gerrit:
+        verified: +1
+
+projects:
+  - name: openstack/daisycloud-core
+    check_daisy:
+      - openstack_daisy_flake8
+      - openstack_daisy_ut
+    tempest_daisy:
+      - openstack_daisy_tempest_master
+
+jobs:
+  - name: openstack_daisy_tempest_master
+    branch: master
+

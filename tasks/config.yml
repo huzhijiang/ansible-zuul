@@ -38,3 +38,4 @@
     - { src: 'gearman-logging.conf', dest: '/etc/zuul/gearman-logging.conf' }
     - { src: 'merger-logging.conf', dest: '/etc/zuul/merger-logging.conf' }
     - { src: 'launcher-logging.conf', dest: '/etc/zuul/launcher-logging.conf' }
+    - { src: 'layout.yaml', dest: '/etc/zuul/config/layout.yaml' }

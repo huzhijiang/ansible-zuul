@@ -12,6 +12,7 @@ layout_config = /etc/zuul/config/layout.yaml
 log_config = /etc/zuul/server-logging.conf
 pidfile = /var/run/zuul-server/zuul-server.pid
 state_dir = /var/lib/zuul
+url_pattern=http://120.24.17.215/{build.parameters[LOG_PATH]}
 
 [gerrit]
 port = {{ gerrit_port | default ('29418') }}
@@ -29,3 +30,5 @@ git_dir = /var/lib/zuul/git
 log_config = /etc/zuul/merger-logging.conf
 pidfile = /var/run/zuul-merger/zuul-merger.pid
 zuul_url = 127.0.0.1
+git_user_email=hu.zhijiang@zte.com.cn
+git_user_name=huzhj
