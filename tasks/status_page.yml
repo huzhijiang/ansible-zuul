@@ -13,15 +13,13 @@
     state=yes
     persistent=yes
 
+- name: Copy fetch-dependencies to /var/lib/zuul/www
+  become: yes
+  shell: cp /opt/zuul/etc/status/fetch-dependencies.sh /var/lib/zuul/www
+
 - name: Copy zuul status page files to /var/lib/zuul/www
   become: yes
   shell: cp -r /opt/zuul/etc/status/public_html/* /var/lib/zuul/www
-
-- name: Copy fetch-dependencies.sh
-  become: yes
-  copy:
-    src=fetch-dependencies.sh
-    dest='/var/lib/zuul/www/fetch-dependencies.sh'
 
 - name: Run fetch-dependencies.sh
   become: yes
